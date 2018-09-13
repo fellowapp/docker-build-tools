@@ -1,4 +1,4 @@
-# fellow-build-tools
+# Fellow docker-build-tools
 
 Builds a docker container suitable for building other docker containers on CircleCI.
 
