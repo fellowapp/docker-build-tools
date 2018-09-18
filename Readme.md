@@ -9,5 +9,6 @@ Builds a docker container suitable for building other docker containers on Circl
   - git
   - curl
   - docker
+  - dockerize
   - awscli python package
   - kubectl

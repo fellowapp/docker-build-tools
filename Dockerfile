@@ -14,3 +14,9 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
     gcloud config set metrics/environment github_docker_image && \
     gcloud components install --quiet kubectl && \
     gcloud --version
+
+# Install dockerize for verifying dependencies are online
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget -q https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && \
+    tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && \
+    rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
