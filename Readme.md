@@ -1,6 +1,6 @@
 # Fellow docker-build-tools
 
-Builds a docker container suitable for building other docker containers on CircleCI.
+Builds a docker container suitable for building other docker containers on CircleCI. https://hub.docker.com/r/fellowapp/docker-build-tools/
 
 ### Tools
 
@@ -9,4 +9,5 @@ Builds a docker container suitable for building other docker containers on Circl
   - git
   - curl
   - docker
- - awscli python package
+  - awscli python package
+  - kubectl
