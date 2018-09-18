@@ -1,11 +1,10 @@
-FROM circleci/python
-ENV CLOUD_SDK_VERSION 203.0.0
-ENV PATH /google-cloud-sdk/bin:$PATH
-
+FROM python:3.6
 # Install awscli for access to Amazon Container Service (& Registry)
-RUN sudo pip install awscli==1.14.38
+RUN pip install awscli==1.14.38
 
 # Install gcloud tools and kubectl
+ENV CLOUD_SDK_VERSION 217.0.0
+ENV PATH /google-cloud-sdk/bin:$PATH
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
     tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
     rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
@@ -13,7 +12,8 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image && \
     gcloud components install --quiet kubectl && \
-    gcloud --version
+    gcloud --version && \
+    kubectl --version
 
 # Install dockerize for verifying dependencies are online
 ENV DOCKERIZE_VERSION v0.6.1
