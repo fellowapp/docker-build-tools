@@ -4,11 +4,11 @@ Builds a docker container suitable for building other docker containers on Circl
 
 ### Tools
 
- - What circle:python includes, like
-  - Python
-  - git
-  - curl
-  - docker
-  - dockerize
+  - The stuff from circleci:python, like:
+    - Python
+    - git
+    - curl
+    - docker
+    - dockerize
   - awscli python package
   - kubectl
