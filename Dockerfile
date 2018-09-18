@@ -1,4 +1,4 @@
-FROM circleci/python:3.6
+FROM circleci/python
 ENV CLOUD_SDK_VERSION 203.0.0
 ENV PATH /google-cloud-sdk/bin:$PATH
 
