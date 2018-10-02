@@ -31,3 +31,21 @@ RUN curl -L -o /tmp/docker-$DOCKER_CLIENT_VERSION.tgz https://download.docker.co
     && tar -xz -C /tmp -f /tmp/docker-$DOCKER_CLIENT_VERSION.tgz \
     && mv /tmp/docker/docker /usr/bin \
     && rm -rf /tmp/docker-$DOCKER_CLIENT_VERSION /tmp/docker
+
+# Install ruby & kubernetes-deploy
+RUN apk --no-cache add \
+      ruby \
+      ruby-io-console \
+      ruby-bigdecimal \
+      ruby-json \
+      libstdc++ \
+      tzdata \
+      ca-certificates \
+    && echo 'gem: --no-document' > /etc/gemrc \
+    && apk add --virtual build_deps \
+        build-base \
+        ruby-dev \
+        libc-dev \
+        linux-headers \
+    && gem install bundler kubernetes-deploy \
+    && apk del build_deps
