@@ -55,3 +55,5 @@ RUN apk --no-cache add \
         linux-headers \
     && gem install bundler kubernetes-deploy \
     && apk del build_deps
+
+COPY do-exclusively /usr/bin/do-exclusively
