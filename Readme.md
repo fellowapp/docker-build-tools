@@ -30,3 +30,5 @@ The second container contains all the stuff to actually deploy a built image:
   - python 2 (for gcloud)
   - gcloud
   - kubectl
+  - do-exclusively from https://github.com/bellkev/circle-lock-test
+  - create-github-deploy from this repo which creates a Deployment in the Github API
