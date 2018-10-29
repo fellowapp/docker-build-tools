@@ -103,7 +103,7 @@ def create_deployment
     auto_merge: false,
     required_contexts: [],
     environment: $options[:environment],
-    transient_environment: !$options[:environment].start_with?('prod'),
+    transient_environment: false,
     production_environment: $options[:environment].start_with?('prod'),
     description: "Automatic deploy"
   )
