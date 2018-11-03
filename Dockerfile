@@ -53,7 +53,7 @@ RUN apk --no-cache add \
         ruby-dev \
         libc-dev \
         linux-headers \
-    && gem install bundler kubernetes-deploy octokit \
+    && gem install bundler kubernetes-deploy create-github-deploy \
     && apk del build_deps
 
 COPY tools/* /usr/bin/
