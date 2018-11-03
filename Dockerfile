@@ -38,7 +38,15 @@ RUN apk --no-cache add \
     gcloud components install --quiet kubectl && \
     gcloud --version
 
-# Install ruby & kubernetes-deploy
+
+# Install kubeval for validating kubernetes templates
+RUN curl -L -O https://github.com/garethr/kubeval/releases/download/0.7.3/kubeval-linux-amd64.tar.gz \
+    && tar xzf kubeval-linux-amd64.tar.gz \
+    && cp kubeval /usr/local/bin \
+    && rm kubeval-linux-amd64.tar.gz
+
+
+# Install ruby, kubernetes-deploy, create-github-deploy
 RUN apk --no-cache add \
       ruby \
       ruby-io-console \
