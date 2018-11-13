@@ -65,3 +65,15 @@ RUN apk --no-cache add \
     && apk del build_deps
 
 COPY tools/* /usr/bin/
+
+FROM deploy as warehouse
+
+RUN curl -fLSs https://circle.ci/cli | bash
+
+RUN apk add --virtual build_deps \
+    build-base \
+    ruby-dev \
+    libc-dev \
+    linux-headers \
+    && gem install sqlint \
+    && apk del build_deps
