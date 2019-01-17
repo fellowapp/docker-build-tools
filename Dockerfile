@@ -10,7 +10,7 @@ RUN apk --no-cache add \
         libc6-compat \
         openssh-client \
         git \
-    && pip install awscli==1.14.38 docker-compose
+    && pip install awscli==1.14.38 docker-compose structlog
 
 # Install docker
 ENV DOCKER_CLIENT_VERSION "18.09.0"
