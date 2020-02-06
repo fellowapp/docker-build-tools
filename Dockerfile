@@ -1,19 +1,21 @@
-FROM python:3.6-alpine as base
+FROM python:3.8-alpine as base
 
 # Install basic dependencies we're going to expect to exist
 # Install awscli for access to Amazon Container Service (& Registry)
 RUN apk --no-cache add \
-        curl \
-        wget \
-        py-crcmod \
-        bash \
-        libc6-compat \
-        openssh-client \
-        git \
-    && pip install awscli==1.14.38 docker-compose structlog
+    curl \
+    wget \
+    py-crcmod \
+    bash \
+    libc6-compat \
+    openssh-client \
+    git \
+    && apk add --no-cache --virtual .build-deps gcc musl-dev libffi-dev make openssl-dev \
+    && pip install awscli==1.17.11 docker-compose structlog \
+    && apk del .build-deps
 
 # Install docker
-ENV DOCKER_CLIENT_VERSION "18.09.0"
+ENV DOCKER_CLIENT_VERSION "19.03.5"
 RUN curl -L -o /tmp/docker-$DOCKER_CLIENT_VERSION.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_CLIENT_VERSION.tgz \
     && tar -xz -C /tmp -f /tmp/docker-$DOCKER_CLIENT_VERSION.tgz \
     && mv /tmp/docker/docker /usr/bin \
@@ -22,12 +24,12 @@ RUN curl -L -o /tmp/docker-$DOCKER_CLIENT_VERSION.tgz https://download.docker.co
 
 FROM base as deploy
 
-ENV CLOUD_SDK_VERSION=218.0.0
+ENV CLOUD_SDK_VERSION=279.0.0
 ENV PATH /google-cloud-sdk/bin:$PATH
 RUN apk --no-cache add \
-        python \
-        py-crcmod \
-        gnupg \
+    python \
+    py-crcmod \
+    gnupg \
     && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
     tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
     rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
@@ -40,7 +42,7 @@ RUN apk --no-cache add \
 
 
 # Install kubeval for validating kubernetes templates
-RUN curl -L -O https://github.com/garethr/kubeval/releases/download/0.7.3/kubeval-linux-amd64.tar.gz \
+RUN curl -L -O https://github.com/garethr/kubeval/releases/download/0.14.0/kubeval-linux-amd64.tar.gz \
     && tar xzf kubeval-linux-amd64.tar.gz \
     && cp kubeval /usr/local/bin \
     && rm kubeval-linux-amd64.tar.gz
@@ -48,20 +50,20 @@ RUN curl -L -O https://github.com/garethr/kubeval/releases/download/0.7.3/kubeva
 
 # Install ruby, kubernetes-deploy, create-github-deploy
 RUN apk --no-cache add \
-      ruby \
-      ruby-io-console \
-      ruby-bigdecimal \
-      ruby-json \
-      libstdc++ \
-      tzdata \
-      ca-certificates \
+    ruby \
+    ruby-io-console \
+    ruby-bigdecimal \
+    ruby-json \
+    libstdc++ \
+    tzdata \
+    ca-certificates \
     && echo 'gem: --no-document' > /etc/gemrc \
     && apk add --virtual build_deps \
-        build-base \
-        ruby-dev \
-        libc-dev \
-        linux-headers \
-    && gem install bundler kubernetes-deploy create-github-deploy \
+    build-base \
+    ruby-dev \
+    libc-dev \
+    linux-headers \
+    && gem install bundler krane create-github-deploy \
     && apk del build_deps
 
 COPY tools/* /usr/bin/
